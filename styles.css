@@ -21,13 +21,14 @@
   --text-soft: #d6d6de;
   --muted: #9a9aa6;
 
-  /* Aurora accents */
-  --accent: #ff3d71;   /* vivid pink   */
-  --accent-2: #7c5cff; /* plasma violet*/
-  --accent-3: #22d3ee; /* electric cyan*/
-  --gold: #ffd166;     /* spotlight    */
+  /* Accent — single violet family (gold reserved for Spotlight) */
+  --accent: #7c5cff;     /* primary violet */
+  --accent-2: #9d7bff;   /* light violet   */
+  --accent-3: #b9a3ff;   /* pale violet — focus rings & cues */
+  --accent-deep: #5b3fd6;/* deep violet    */
+  --gold: #ffd166;       /* Spotlight only */
 
-  --grad: linear-gradient(100deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
+  --grad: linear-gradient(100deg, var(--accent-2), var(--accent) 55%, var(--accent-deep));
 
   /* Spacing scale (standard 16-64) */
   --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-6: 24px;
@@ -114,9 +115,9 @@ a:focus-visible, button:focus-visible {
   position: absolute; inset: -40% -10% auto -10%;
   height: 150%;
   background:
-    radial-gradient(40% 50% at 20% 20%, rgba(255,61,113,0.35), transparent 60%),
-    radial-gradient(40% 50% at 80% 30%, rgba(124,92,255,0.35), transparent 60%),
-    radial-gradient(45% 55% at 55% 75%, rgba(34,211,238,0.28), transparent 60%);
+    radial-gradient(40% 50% at 20% 20%, rgba(124,92,255,0.40), transparent 60%),
+    radial-gradient(40% 50% at 80% 30%, rgba(157,123,255,0.32), transparent 60%),
+    radial-gradient(45% 55% at 55% 75%, rgba(91,63,214,0.32), transparent 60%);
   filter: blur(30px);
   background-size: 200% 200%;
   animation: aurora 14s ease-in-out infinite;
@@ -152,7 +153,7 @@ a:focus-visible, button:focus-visible {
   font-weight: 700; margin-bottom: var(--sp-4);
 }
 .hero h1 {
-  font-size: clamp(3.2rem, 12vw, 7.5rem);
+  font-size: clamp(2.6rem, 9vw, 5rem);
   letter-spacing: 1px;
 }
 .hero h1 .accent {
@@ -277,18 +278,67 @@ a:focus-visible, button:focus-visible {
   color: var(--muted); font-size: 0.82rem; text-align: right;
   white-space: nowrap; flex-shrink: 0;
 }
-/* external-link cue */
+/* external-link cue (opens in new tab) */
 .track-list li a .t-role::after { content: " ↗"; color: var(--accent-3); }
 
-/* ---------- CHIPS ---------- */
+/* thumbnail artwork (YouTube) */
+.track-list li .thumb {
+  width: 60px; height: 34px; flex-shrink: 0;
+  border-radius: 6px; object-fit: cover;
+  background: var(--surface); border: 1px solid var(--border);
+}
+
+/* embeddable rows expand a player on click */
+.track-list li.has-player a { cursor: pointer; }
+.track-list li.has-player a .t-role::after { content: " ▶"; color: var(--accent-2); font-size: 0.8em; }
+.track-list li.open a .t-role::after { content: " ✕"; color: var(--accent); }
+
+/* inline player panel (not counted in the track numbering) */
+.track-list li.player-row {
+  display: block; counter-increment: none;
+  background: transparent !important; border: none; padding: 6px 0 4px;
+  transform: none !important; overflow: visible;
+}
+.track-list li.player-row::before { content: none; }
+.track-list li.player-row:hover { transform: none; }
+.pl { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong); background: #000; }
+.pl-yt { position: relative; aspect-ratio: 16 / 9; }
+.pl-yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pl-sp iframe { width: 100%; height: 152px; border: 0; display: block; }
+
+/* ---------- CHIPS (collaborators — now links) ---------- */
+.chips-hint { color: var(--muted); font-size: 0.9rem; margin-bottom: var(--sp-4); }
 .chips { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
-.chips span {
+.chips span, .chips a {
+  display: inline-block;
   background: var(--card); border: 1px solid var(--border);
   padding: 0.55rem 1.1rem; border-radius: 999px;
   font-size: 0.92rem; font-weight: 600; color: var(--text-soft);
-  transition: border-color 0.2s, color 0.2s;
+  transition: border-color 0.2s, color 0.2s, transform 0.18s var(--ease);
 }
-.chips span:hover { border-color: var(--accent-2); color: var(--text); }
+.chips a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+.chips a::after { content: " ♪"; color: var(--accent-2); font-size: 0.85em; }
+
+/* ---------- LEAD FORM (Formspree) ---------- */
+.lead-form {
+  max-width: 540px; margin: 0 auto var(--sp-8);
+  display: grid; gap: var(--sp-3); text-align: left;
+}
+.lead-form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+.lead-form label { font-size: 0.78rem; color: var(--muted); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 4px; display: block; }
+.lead-form input, .lead-form textarea {
+  width: 100%; background: var(--card); border: 1px solid var(--border-strong);
+  border-radius: 10px; padding: 0.8rem 1rem; color: var(--text);
+  font: inherit; font-size: 0.95rem;
+}
+.lead-form input:focus, .lead-form textarea:focus {
+  outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent);
+}
+.lead-form textarea { min-height: 120px; resize: vertical; }
+.lead-form button { justify-self: start; border: none; cursor: pointer; }
+.form-status { font-size: 0.9rem; min-height: 1.2em; color: var(--muted); }
+.form-status.ok { color: #4ade80; }
+.form-status.err { color: #f87171; }
 
 /* ---------- CONTACT ---------- */
 .contact { text-align: center; }
@@ -323,6 +373,9 @@ a:focus-visible, button:focus-visible {
   .group.two-col { grid-template-columns: 1fr; }
   .track-list li, .track-list li a { flex-wrap: wrap; }
   .t-role { text-align: left; width: 100%; padding-left: 42px; }
+  .track-list li.player-row .t-role,
+  .track-list li.player-row { padding-left: 0; }
+  .lead-form .row2 { grid-template-columns: 1fr; }
   .hero-stats { gap: var(--sp-8); }
 }
 
