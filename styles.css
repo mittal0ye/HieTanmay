@@ -102,6 +102,54 @@ a:focus-visible, button:focus-visible {
   padding: 6px 2px; min-height: 44px; display: flex; align-items: center;
 }
 .nav-links a:hover { color: var(--text); }
+.nav-links > a[aria-current="page"] { color: var(--text); }
+
+/* ---------- WORK DROPDOWN ---------- */
+.dropdown { position: relative; display: flex; align-items: center; }
+.dropbtn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 600;
+  letter-spacing: 0.3px; color: var(--muted);
+  padding: 6px 2px; min-height: 44px; display: inline-flex; align-items: center; gap: 5px;
+  transition: color 0.2s;
+}
+.dropbtn:hover, .dropdown.open .dropbtn, .dropbtn.active { color: var(--text); }
+.dropbtn .caret { font-size: 0.7em; transition: transform 0.2s var(--ease); }
+.dropdown.open .caret { transform: rotate(180deg); }
+.dropdown-menu {
+  position: absolute; top: calc(100% + 10px); right: 0; min-width: 210px;
+  background: var(--card); border: 1px solid var(--border-strong);
+  border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 2px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+  opacity: 0; visibility: hidden; transform: translateY(-8px);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+  z-index: 120;
+}
+.dropdown:hover .dropdown-menu, .dropdown.open .dropdown-menu { opacity: 1; visibility: visible; transform: none; }
+.dropdown-menu a {
+  display: block; min-height: auto; padding: 0.62rem 0.9rem; border-radius: 8px;
+  color: var(--text-soft); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.2px;
+  transition: background 0.15s, color 0.15s;
+}
+.dropdown-menu a:hover { background: var(--card-hover); color: var(--text); }
+.dropdown-menu a[aria-current="page"] { background: var(--card-hover); color: var(--accent-2); }
+
+/* ---------- SUB-PAGE HEADER ---------- */
+.page-head {
+  position: relative; overflow: hidden; isolation: isolate;
+  padding: clamp(3rem, 8vw, 5.5rem) var(--sp-6) clamp(2rem, 5vw, 3rem);
+  border-bottom: 1px solid var(--border);
+}
+.page-head::before {
+  content: ""; position: absolute; inset: -50% -10% auto -10%; height: 170%;
+  background:
+    radial-gradient(40% 60% at 25% 15%, rgba(124,92,255,0.30), transparent 60%),
+    radial-gradient(42% 60% at 82% 5%, rgba(91,63,214,0.24), transparent 60%);
+  filter: blur(30px); z-index: -1; pointer-events: none;
+}
+.page-head-inner { max-width: var(--max); margin: 0 auto; }
+.page-head h1 { font-size: clamp(2.6rem, 8vw, 4.5rem); letter-spacing: 1px; }
+.page-head .lead { margin-top: var(--sp-4); margin-bottom: 0; }
 
 /* ---------- HERO (Aurora + Waveform) ---------- */
 .hero {
@@ -238,6 +286,26 @@ a:focus-visible, button:focus-visible {
   margin-top: var(--sp-6); font-weight: 700; color: var(--accent-3);
 }
 
+/* ---------- EXPLORE GRID (homepage → work pages) ---------- */
+.explore-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-4); }
+.explore-card {
+  position: relative; display: block;
+  background: var(--card); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); padding: var(--sp-8) var(--sp-6) var(--sp-6);
+  transition: transform var(--dur) var(--ease), border-color var(--dur), background var(--dur);
+}
+.explore-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--card-hover); }
+.explore-kicker {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 1px;
+  color: var(--accent-2);
+}
+.explore-card .group-title { margin: var(--sp-2) 0 var(--sp-3); font-size: 1.9rem; }
+.explore-card p { color: var(--muted); font-size: 0.95rem; }
+.explore-go {
+  display: inline-block; margin-top: var(--sp-4);
+  font-weight: 700; color: var(--accent-3); letter-spacing: 0.3px;
+}
+
 /* ---------- GROUPS & TRACK LISTS (music tracklist styling) ---------- */
 .group { margin-bottom: var(--sp-12); }
 .group.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-8); }
@@ -369,7 +437,11 @@ a:focus-visible, button:focus-visible {
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 640px) {
-  .nav-links { display: none; }
+  .nav-inner { padding: var(--sp-3) var(--sp-4); }
+  .nav-links { gap: 14px; }
+  .nav-links > a, .dropbtn { font-size: 0.82rem; }
+  .dropdown-menu { min-width: 180px; }
+  .explore-grid { grid-template-columns: 1fr; }
   .group.two-col { grid-template-columns: 1fr; }
   .track-list li, .track-list li a { flex-wrap: wrap; }
   .t-role { text-align: left; width: 100%; padding-left: 42px; }
