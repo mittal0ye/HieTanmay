@@ -40,6 +40,8 @@
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 340ms;
+
+  --nav-h: 77px; /* sticky nav height — subtracted so the hero fills the first screen */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -165,7 +167,10 @@ a:focus-visible, button:focus-visible {
 /* ---------- HERO (Aurora + Waveform) ---------- */
 .hero {
   position: relative; overflow: hidden;
-  padding: clamp(4rem, 12vw, 8rem) var(--sp-6) clamp(3rem, 8vw, 6rem);
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
+  display: flex; align-items: center;
+  padding: clamp(2rem, 6vw, 4rem) var(--sp-6) clamp(4.5rem, 9vw, 7rem);
   border-bottom: 1px solid var(--border);
   isolation: isolate;
 }
@@ -448,6 +453,7 @@ a:focus-visible, button:focus-visible {
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 640px) {
+  :root { --nav-h: 63px; }
   .nav-inner { padding: var(--sp-3) var(--sp-4); }
   .brand { gap: 8px; }
   .brand img { height: 38px; width: 38px; }
